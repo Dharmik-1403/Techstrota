@@ -52,7 +52,10 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch("https://happy.techstrota.com/api/blogs");
+        // This will use the variable from Netlify, or fallback to the local URL for testing
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://happy.techstrota.com/api";
+
+        const res = await fetch(`${API_URL}/blogs`);
         const data = await res.json();
         // Unwrap data to handle potential object wrappers
         setBlogs(Array.isArray(data) ? data : data.data || []);

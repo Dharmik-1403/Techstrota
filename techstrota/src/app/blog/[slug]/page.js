@@ -40,10 +40,20 @@ export default function BlogPost({ params: paramsPromise }) {
   }, []);
 
   useEffect(() => {
+  // Use the Environment Variable from Netlify, or fallback to your current URL for safety
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://happy.techstrota.com/api";
+
     if (slug) {
-      fetch(`https://happy.techstrota.com/api/blogs/${slug}`)
-        .then((res) => res.json()).then((data) => { setBlog(data); setLoading(false); })
-        .catch(() => setLoading(false));
+      fetch(`${API_BASE}/blogs/${slug}`)
+        .then((res) => res.json())
+        .then((data) => { 
+          setBlog(data); 
+          setLoading(false); 
+        })
+        .catch((err) => {
+          console.error("Transmission Error:", err);
+          setLoading(false); 
+        });
     }
   }, [slug]);
 
